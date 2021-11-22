@@ -24,29 +24,21 @@ def clear_screen():
         _ = system('clear')
 
 
-def init_board():
-    game_board = ["__" for i in range(len(word_list))]
+def init_board(word_length):
+    game_board = ["__ " for i in range(word_length)]
     return game_board
 
 
-# Prints the user interface, maybe figure out how to get rid of all the ugly print()
-def print_screen(game_board, length, lives, guesses, cheat, gen_word):
+def print_screen(game_board, lives, guesses, cheat, guess_word):
     print()
-    for i in range(length):
-        if "_" in game_board[i]:
-            print(game_board[i], " ", end="")
-        else:
-            print(game_board[i], "  ", end="")
-
+    print(*game_board, ' ')
     print()
     print()
     print(lives, "LIVES remaining")
-    print("Letters guessed: ", end="")
-    for i in guesses:
-        print(i, end=" ")
+    print("Letters guessed: ", *guesses, ' ')
     print()
     if cheat == True:
-        print(gen_word)
+        print(guess_word)
     print("Guess letter: ", end="")
 
 
@@ -61,9 +53,9 @@ def print_win(lives):
 
 
 # See above above
-def print_lose(gen_word):
+def print_lose(guess_word):
     print()
-    print("Game OVER!, the word was", gen_word.upper())
+    print("Game OVER!, the word was", guess_word.upper())
     print("Press ENTER to start again")
     input()
 
@@ -99,23 +91,23 @@ def main():
         remaining_guess = 0
         lives = 6
         cheat = False
-        gen_word = get_random_word()
-        length = len(gen_word)
-        game_board = init_board()
+        guess_word = get_random_word()
+        word_length = len(guess_word)
+        game_board = init_board(word_length)
         guesses = []
 
         # Actual game loop
         while True:
             clear_screen()
-            print_screen(game_board, length, lives, guesses, cheat, gen_word)
+            print_screen(game_board, lives, guesses, cheat, guess_word)
 
             answer_wrong = True      
 
-            if remaining_guess == length:
+            if remaining_guess == word_length:
                 print_win(lives)
                 break
             elif lives == 0:
-                print_lose(gen_word)
+                print_lose(guess_word)
                 break
 
             guess = usr_input()
@@ -126,11 +118,11 @@ def main():
                 cheat = True
             else:
                 # Check if answer correct and update board
-                for i in range(length):
+                for i in range(word_length):
                     if guess == game_board[i]:
                         answer_wrong = False
                         break
-                    elif guess == gen_word[i]:
+                    elif guess == guess_word[i]:
                         game_board.pop(i)
                         game_board.insert(i, guess)
                         remaining_guess += 1
