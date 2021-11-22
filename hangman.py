@@ -4,38 +4,17 @@ from random import seed
 from random import randint
 
 
-# Count lines in .txt and return random number in range of line count
-def rand_word():
-    if name == 'nt': 
-        f = open("C:\Programming\Python\shit\words.txt", "r", encoding='UTF8')
-    else:
-        f = open("./words.txt", "r", encoding='UTF8')
+def read_words() -> list:
+    with open("./words.txt", "r") as f:
+        word_list = f.read().splitlines()
+
+    return word_list
 
 
-    counter = 0
+def get_random_word() -> str:
     seed()
-
-    for i in f:
-        counter += 1
-
-    f.close()
-
-    return randint(0, counter)
-
-
-# Assign word to be used from .txt file
-def assn_word():
-    word_line = rand_word()
-    if name == 'nt': 
-        f = open("C:\Programming\Python\shit\words.txt", "r", encoding='UTF8')
-    else:
-        f = open("./words.txt", "r", encoding='UTF8')
-
-    for i in range(word_line):
-        gen_word = f.readline().rstrip('\n')
-
-    f.close()
-    return gen_word
+    random_index = randint(0, len(word_list))
+    return word_list[random_index]
 
 
 # Works on linux and windows 0_0
@@ -167,4 +146,10 @@ def main():
                     guesses.append(guess)
 
 
-main()
+#main()
+
+word_list = read_words()
+print(get_random_word())
+print(get_random_word())
+print(get_random_word())
+print(get_random_word())
