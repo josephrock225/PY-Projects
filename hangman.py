@@ -4,14 +4,33 @@ from random import seed
 from random import randint
 
 
-class GameBoard:
+class Game:
     def __init__(self, word) -> None:
         self.word = word
-        self.word_length = len(word)
+        self.word_length = len(self.word)
         self.guesses = []
+        self.lives = 6
+        self.is_cheating = False
+        self.game_board = ["__" for i in range(self.word_length)]
 
     def guess(self, letter):
-        self.guesses.append(letter.lower())
+        # if correct
+        if letter in self.word:
+            for index, l in enumerate(self.word):
+                if l == letter:
+                    self.game_board.pop(index)
+                    self.game_board.insert(index, letter)
+
+        # if incorrect
+        else:
+            self.guesses.append(letter.lower())
+            self.lives -= 1
+
+    def cheat(self):
+        self.is_cheating = True
+
+    def add_lives(self, num):
+        self.lives += num
 
 
 def read_words() -> list:
@@ -35,20 +54,20 @@ def clear_screen():
 
 
 def init_board(word_length):
-    game_board = ["__ " for i in range(word_length)]
+    game_board = ["__" for i in range(word_length)]
     return game_board
 
 
-def print_screen(game_board, lives, guesses, cheat, guess_word):
+def print_screen(game):
     print()
-    print(*game_board, ' ')
+    print(*game.game_board, ' ')
     print()
     print()
-    print(lives, "LIVES remaining")
-    print("Letters guessed: ", *guesses, ' ')
+    print(game.lives, "LIVES remaining")
+    print("Letters guessed: ", *game.guesses)
     print()
-    if cheat == True:
-        print(guess_word)
+    if game.is_cheating:
+        print(game.word)
     print("Guess letter: ", end="")
 
 
@@ -103,58 +122,40 @@ def main():
     while True:
         # inits 
         remaining_guess = 0
-        lives = 6
-        cheat = False
-        guess_word = get_random_word()
-        word_length = len(guess_word)
-        game_board = init_board(word_length)
-        guesses = []
+        game = Game(get_random_word())
 
         # Actual game loop
         while True:
             clear_screen()
-            print_screen(game_board, lives, guesses, cheat, guess_word)
+            print_screen(game)
 
             answer_wrong = True      
 
-            if remaining_guess == word_length:
-                print_win(lives)
+            if "__" not in game.game_board:
+                print_win(game.lives)
                 break
-            elif lives == 0:
-                print_lose(guess_word)
+            elif game.lives == 0:
+                print_lose(game.word)
                 break
 
             guess = usr_input()
 
             if guess == "lives":
-                lives += 6
+                game.add_lives(6)
             elif guess == "cheat":
-                cheat = True
+                game.cheat()
             elif guess == "quit":
                 quit_game()
             elif guess == "help":
                 print_help()
             else:
                 # Check if answer correct and update board
-                for i in range(word_length):
-                    if guess == game_board[i]:
-                        answer_wrong = False
-                        break
-                    elif guess == guess_word[i]:
-                        game_board.pop(i)
-                        game_board.insert(i, guess)
-                        remaining_guess += 1
-                        answer_wrong = False
-
-                # Wrong answer tracker
-                if answer_wrong == True:
-                    lives -= 1
-                    guesses.append(guess)
+                game.guess(guess)
 
 word_list = read_words()
-#main()
+main()
 
-game = GameBoard(get_random_word())
+game = Game(get_random_word())
 print(game.guesses)
 print(game.word)
 print(game.word_length)
