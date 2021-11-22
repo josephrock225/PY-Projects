@@ -17,7 +17,6 @@ def get_random_word() -> str:
     return word_list[random_index]
 
 
-# Works on linux and windows 0_0
 def clear_screen():
     if name == 'nt': 
         _ = system('cls')
@@ -25,11 +24,8 @@ def clear_screen():
         _ = system('clear')
 
 
-# Create gameboard, you should figure out that one cool shorthand to make it super cool
-def init_board(length):
-    game_board = []
-    for i in range(length):
-        game_board.append("__")
+def init_board():
+    game_board = ["__" for i in range(len(word_list))]
     return game_board
 
 
@@ -103,9 +99,9 @@ def main():
         remaining_guess = 0
         lives = 6
         cheat = False
-        gen_word = assn_word()
+        gen_word = get_random_word()
         length = len(gen_word)
-        game_board = init_board(length)
+        game_board = init_board()
         guesses = []
 
         # Actual game loop
@@ -145,11 +141,5 @@ def main():
                     lives -= 1
                     guesses.append(guess)
 
-
-#main()
-
 word_list = read_words()
-print(get_random_word())
-print(get_random_word())
-print(get_random_word())
-print(get_random_word())
+main()
