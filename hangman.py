@@ -60,23 +60,27 @@ def print_lose(guess_word):
     input()
 
 
-# Validate input
+def print_help():
+    print("Here's some helpful commands")
+    print("Type 'quit' to end game")
+    print("Type 'lives' to gain 6 lives")
+    print("Type 'cheat' to reveal answer")
+    print()
+
+
+def quit_game():
+    print("Thanks for playing!")
+    input()
+    exit()
+
+
+# TODO fix logic
 def usr_input():
     while True:
+        keywords = ["help", "quit", "lives", "cheat"]
         guess = input()
 
-        if guess == "help":
-            print("Here's some helpful commands")
-            print("Type 'quit' to end game")
-            print("Type 'lives' to gain 6 lives")
-            print("Type 'cheat' to reveal answer")
-        elif guess == "quit":
-            print("Thanks for playing!")
-            input()
-            exit()
-        elif guess == "lives":
-            return guess
-        elif guess == "cheat":
+        if guess in keywords:
             return guess
         elif len(guess) != 1 or guess.isalpha() == False:
             print("Not valid input")
@@ -116,6 +120,10 @@ def main():
                 lives += 6
             elif guess == "cheat":
                 cheat = True
+            elif guess == "quit":
+                quit_game()
+            elif guess == "help":
+                print_help()
             else:
                 # Check if answer correct and update board
                 for i in range(word_length):
