@@ -4,6 +4,16 @@ from random import seed
 from random import randint
 
 
+class GameBoard:
+    def __init__(self, word) -> None:
+        self.word = word
+        self.word_length = len(word)
+        self.guesses = []
+
+    def guess(self, letter):
+        self.guesses.append(letter.lower())
+
+
 def read_words() -> list:
     with open("./words.txt", "r") as f:
         word_list = f.read().splitlines()
@@ -142,4 +152,11 @@ def main():
                     guesses.append(guess)
 
 word_list = read_words()
-main()
+#main()
+
+game = GameBoard(get_random_word())
+print(game.guesses)
+print(game.word)
+print(game.word_length)
+game.guess("A")
+print(game.guesses)
