@@ -1,7 +1,7 @@
 
 def get_input():
     while True:
-        num = input("Enter a number: ")
+        num = input("Enter a number (or 'quit' to exit): ")
 
         if num.isdigit():
             return int(num)
