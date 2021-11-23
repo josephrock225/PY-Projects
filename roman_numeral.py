@@ -5,6 +5,8 @@ def get_input():
 
         if num.isdigit():
             return int(num)
+        elif num == "quit":
+            quit()
         else:
             print("Please enter a number.")
 
