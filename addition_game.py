@@ -2,37 +2,39 @@ from random import seed
 from random import randint
 from os import system, name
 
-score = 0
 
-while True:
+class Game:
+    def __init__(self) -> None:
+        self.num1 = self.rand_number()
+        self.num2 = self.rand_number()
+        self.ans = self.num1 + self.num2
+        self.score = 0
 
+    def rand_number():
+        seed()
+        return randint(0, 100)
+
+
+def clear_screen():
     if name == 'nt': 
         _ = system('cls')
     else:
         _ = system('clear')
 
-    seed()
 
-    number1 = randint(0, 100)
-    number2 = randint(0, 100)
-    ans = number1 + number2
+while True:
+    clear_screen()
+    game = Game
 
-    while True:
-        if name == 'nt': 
-            _ = system('cls')
-
-        print("Score:", score)
-        print("What is", number1, "+", str(number2) + "?")
-        in_ans = input()
+    #print("Score:", game.score)
+    print("What is", game.num1, "+", game.num2, "?")
+    in_ans = input()
 
 
-        if str(in_ans) == "exit":
-            exit()
-        elif int(in_ans) == ans:
-            score += 1
-            break
-        else:
-            score = 0
-
-    if name == 'nt': 
-        _ = system('cls')
+    if str(in_ans) == "quit":
+        exit()
+    elif int(in_ans) == game.ans:
+        game.score += 1
+        break
+    else:
+        game.score = 0
