@@ -11,7 +11,7 @@ class Game:
         self.guesses = []
         self.lives = 6
         self.is_cheating = False
-        self.game_board = ["__" for i in range(self.word_length)]
+        self.game_board = ["_" for i in range(self.word_length)]
 
     # TODO fix logic
     def guess(self, letter):
@@ -119,7 +119,7 @@ def main():
             clear_screen()
             print_screen(game)    
 
-            if "__" not in game.game_board:
+            if "_" not in game.game_board:
                 print_win(game.lives)
                 break
             elif game.lives == 0:
