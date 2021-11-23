@@ -4,6 +4,24 @@ from random import seed
 from random import randint
 
 
+class Game:
+    def __init__(self) -> None:
+        self.colors = ["r", "g", "b", "p", "y", "w"]
+        self.code_pattern = self.gen_ans()
+        self.decoding_board = self.init_decoding_board()
+        self.key_board = self.init_key_board()
+
+    def gen_ans(self) -> list:
+        seed()
+        return [self.colors[randint(0,5)] for i in range(0, 4)]
+
+    def init_decoding_board(self) -> list[list]:
+        return [["x" for row in range(0, 4)] for col in range(0, 10)]
+    
+    def init_key_board(self) -> list[list]:
+        return [[" " for i in range(0, 2)] for j in range(0, 10)]
+
+
 def clear_screen():
     if name == 'nt': 
         _ = system('cls')
@@ -12,6 +30,7 @@ def clear_screen():
 
 
 def draw_screen(game_board, wObl_board):
+    game = Game()
     print()
     for i in range(10):
         print("|  ", end=" ")
@@ -21,7 +40,7 @@ def draw_screen(game_board, wObl_board):
         print()
 
     print("Guess 4 colors seperated by spaces: ")
-    print("Colors: r, g, b, p, y, w")
+    print("Colors:", *game.colors)
 
 
 def update_board(game_board, guess_list, wObl_board, wObl_list, counter):
@@ -35,6 +54,7 @@ def update_board(game_board, guess_list, wObl_board, wObl_list, counter):
     return game_board, wObl_board
 
 
+# done
 def gen_ans():
     colors = [
         "r",
@@ -44,10 +64,13 @@ def gen_ans():
         "y",
         "w"
     ]
+    seed()
+    answer = [colors[randint(0,5)] for i in range(0, 4)]
 
-    return [colors[randint(0,5)] for i in range(0, 4)]
+    return answer
 
 
+# done
 def init_board():
     return [["x" for i in range(0, 4)] for j in range(0, 10)], [[" " for i in range(0, 2)] for j in range(0, 10)]
 
@@ -86,7 +109,6 @@ def input_par():
 def check_ans(guess_list, ans_list):
     guess = []
     ans = []
-    flags = []
     bl = 0
     w = 0
 
@@ -116,7 +138,6 @@ def check_ans(guess_list, ans_list):
 
 def main():
     while True:
-        seed()
         ans_list = gen_ans()
         game_board, wObl_board = init_board()
         wObl_list = [" ", " "]
