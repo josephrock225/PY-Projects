@@ -5,10 +5,9 @@ from os import system, name
 
 class Game:
     def __init__(self) -> None:
-        self.num1 = self.rand_number()
-        self.num2 = self.rand_number()
+        self.num1 = Game.rand_number()
+        self.num2 = Game.rand_number()
         self.ans = self.num1 + self.num2
-        self.score = 0
 
     def rand_number():
         seed()
@@ -22,19 +21,19 @@ def clear_screen():
         _ = system('clear')
 
 
+score = 0
+
 while True:
     clear_screen()
-    game = Game
+    game = Game()
 
-    #print("Score:", game.score)
+    print("Score:", score)
     print("What is", game.num1, "+", game.num2, "?")
     in_ans = input()
-
 
     if str(in_ans) == "quit":
         exit()
     elif int(in_ans) == game.ans:
-        game.score += 1
-        break
+        score += 1
     else:
-        game.score = 0
+        score = 0
