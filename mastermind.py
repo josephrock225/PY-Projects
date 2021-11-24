@@ -15,10 +15,10 @@ class Game:
         self.white_peg = 0
 
     def init_decoding_board(self) -> list[list]:
-        return [["x" for row in range(0, 4)] for col in range(0, 10)]
+        return [["x" for row in range(4)] for col in range(10)]
     
     def init_key_board(self) -> list[list]:
-        return [[" " for i in range(0, 2)] for j in range(0, 10)]
+        return [[" " for i in range(2)] for j in range(10)]
 
 
 def clear_screen():
@@ -34,6 +34,7 @@ def select_gamemode(game) -> list:
         print("Select your gamemode.")
         print("Press 1 for no repeating colors.")
         print("Press 2 to allow repeating colors.")
+        print("Type 'quit' to exit.")
         choice = input()
 
         if choice == "1":
@@ -43,6 +44,9 @@ def select_gamemode(game) -> list:
         elif choice == "2":
             game.answer = choices(game.colors, k=4)           
             break
+
+        elif choice == "quit":
+            quit()
 
 
 def get_input(game) -> list:
@@ -55,7 +59,7 @@ def get_input(game) -> list:
     while True:
         guess = input().lower().replace(' ', '')
 
-        # too many char
+        # incorrect # of letters
         if len(guess) != 4:
             continue
 
@@ -102,7 +106,7 @@ def draw_screen(game):
 
 
 def update_board(game):
-    for i in range(0,4):
+    for i in range(4):
         game.decoding_board[game.round].pop(i)
         game.decoding_board[game.round].insert(i, game.guess[i])
 
