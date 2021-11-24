@@ -35,7 +35,7 @@ class Game:
 
 
 def get_random_word() -> str:
-    with open("./words.txt", "r") as f:
+    with open("./Hangman/words.txt", "r") as f:
         word_list = f.read().splitlines()
 
     seed()
