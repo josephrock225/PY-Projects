@@ -7,7 +7,7 @@ from random import randint
 class Game:
     def __init__(self) -> None:
         self.colors = ["r", "g", "b", "p", "y", "w"]
-        self.round = 0
+        self.round = 9
         self.guess = []
         self.answer = self.gen_ans()
         self.decoding_board = self.init_decoding_board()
@@ -65,7 +65,7 @@ def draw_screen(game):
         print("|   Bl:", game.key_board[i][0], " W:", game.key_board[i][1])
         print()
 
-    print("Guess 4 colors seperated by spaces: ")
+    print("Guess 4 colors: ")
     print("Colors:", *game.colors)
 
 
@@ -107,7 +107,7 @@ def main():
     while True:
         game = Game()
 
-        while game.round <= 10:
+        while game.round >= -1:
             clear_screen()
             draw_screen(game)
 
@@ -116,8 +116,9 @@ def main():
                 print("Winner!")
                 break
 
-            if game.round == 10:
+            if game.round == -1:
                 print("Loser!")
+                print("The answer was:", *game.answer)
                 break
             
             # get input
@@ -129,7 +130,7 @@ def main():
             #TODO update board
             update_board(game)
             
-            game.round += 1
+            game.round -= 1
 
         input()
 
