@@ -51,7 +51,7 @@ def clear_screen():
 
 
 def print_screen(game):
-    print(*game.game_board, ' ')
+    print(*game.game_board)
     print()
     print()
     print(game.lives, "LIVES remaining")
@@ -63,6 +63,7 @@ def print_screen(game):
 
 
 def print_win(lives):
+    print()
     print("Congrats! You survived with", lives, "lives remaining!")
     print("Press ENTER to start again")
     print()
@@ -70,7 +71,8 @@ def print_win(lives):
 
 
 def print_lose(guess_word):
-    print("Game OVER!, the word was", guess_word.upper())
+    print()
+    print("Game OVER! The word was", guess_word.upper())
     print("Press ENTER to start again")
     print()
     input()
