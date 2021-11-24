@@ -4,7 +4,7 @@ from random import *
 
 
 class Game:
-    def __init__(self) -> None:
+    def __init__(self):
         self.colors = ["r", "g", "b", "p", "y", "w"]
         self.round = 9
         self.guess = []
@@ -28,7 +28,7 @@ def clear_screen():
         _ = system('clear')
 
 
-def select_gamemode(game) -> list:
+def select_gamemode(game):
     seed()
     while True:
         print("Select your gamemode.")
@@ -49,7 +49,7 @@ def select_gamemode(game) -> list:
             quit()
 
 
-def get_input(game) -> list:
+def get_input(game):
     def in_colors(guess):
         for i in guess:
             if i not in game.colors:
