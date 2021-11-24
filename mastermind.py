@@ -4,6 +4,28 @@ from random import seed
 from random import randint
 
 
+class Game:
+    def __init__(self) -> None:
+        self.colors = ["r", "g", "b", "p", "y", "w"]
+        self.round = 0
+        self.guess = []
+        self.answer = self.gen_ans()
+        self.decoding_board = self.init_decoding_board()
+        self.key_board = self.init_key_board()
+        self.black_peg = 0
+        self.white_peg = 0
+
+    def gen_ans(self) -> list:
+        seed()
+        return [self.colors[randint(0,5)] for i in range(0, 4)]
+
+    def init_decoding_board(self) -> list[list]:
+        return [["x" for row in range(0, 4)] for col in range(0, 10)]
+    
+    def init_key_board(self) -> list[list]:
+        return [[" " for i in range(0, 2)] for j in range(0, 10)]
+
+
 def clear_screen():
     if name == 'nt': 
         _ = system('cls')
@@ -11,134 +33,116 @@ def clear_screen():
         _ = system('clear')
 
 
-def draw_screen(game_board, wObl_board):
+def get_input(game) -> list:
+    # check for correct colors
+    def in_colors(guess):
+        for i in guess:
+            if i not in game.colors:
+                return False
+        return True
+
+    while True:
+        guess = input().lower().replace(' ', '')
+
+        # too many letters
+        if len(guess) != 4:
+            continue
+
+        # letter not in colors list
+        if not in_colors(guess):
+            continue
+
+        game.guess = [i for i in guess]
+        break
+
+
+def draw_screen(game):
     print()
     for i in range(10):
         print("|  ", end=" ")
         for j in range(4):
-            print(game_board[i][j], " ", end=" ")
-        print("|   Bl:", wObl_board[i][0], " W:", wObl_board[i][1])
+            print(game.decoding_board[i][j], " ", end=" ")
+        print("|   Bl:", game.key_board[i][0], " W:", game.key_board[i][1])
         print()
 
     print("Guess 4 colors seperated by spaces: ")
-    print("Colors: r, g, b, p, y, w")
+    print("Colors:", *game.colors)
 
 
-def update_board(game_board, guess_list, wObl_board, wObl_list, counter):
+def update_board(game):
+    #row = abs(game.round - 9)
+
+
     for i in range(0,4):
-        game_board[counter].pop(i)
-        game_board[counter].insert(i, guess_list[i])
-    for i in range(0,2):
-        wObl_board[counter].pop(i)
-        wObl_board[counter].insert(i, wObl_list[i])
+        game.decoding_board[game.round].pop(i)
+        game.decoding_board[game.round].insert(i, game.guess[i])
 
-    return game_board, wObl_board
-
-
-def gen_ans():
-    colors = [
-        "r",
-        "g",
-        "b",
-        "p",
-        "y",
-        "w"
-    ]
-
-    return [colors[randint(0,5)] for i in range(0, 4)]
+    game.key_board[game.round].pop(0)
+    game.key_board[game.round].insert(0, game.black_peg)
+    game.key_board[game.round].pop(1)
+    game.key_board[game.round].insert(1, game.white_peg)
 
 
-def init_board():
-    return [["x" for i in range(0, 4)] for j in range(0, 10)], [[" " for i in range(0, 2)] for j in range(0, 10)]
+def check_ans(game):
+    game.black_peg = 0
+    game.white_peg = 0
+    ans_copy = game.answer.copy()
+    guess_copy = game.guess.copy()
 
+    # check for correct spot
+    for index, ans_letter in enumerate(ans_copy):
+        if ans_letter == guess_copy[index]:
+            ans_copy.pop(index)
+            ans_copy.insert(index, "")
+            guess_copy.pop(index)
+            guess_copy.insert(index, "")
+            game.black_peg += 1
 
-def input_par():
-    while True:
-        counter = 0
-        li_item = ""
-        guess_list = []
-        fail = False
-
-        guess = input()
-
-        for i in guess:
-            if i == " ":
-                guess_list.insert(counter, li_item)
-                li_item = ""
-                counter += 1
-            else:
-                li_item += i
-
-        guess_list.insert(counter, li_item)
-
-        # Failed input situations
-        for i in range(len(guess_list)):
-            if len(guess_list[i]) != 1 or guess_list[i] not in "rgbpyw":
-                fail = True
-                break
-
-        if len(guess_list) == 4 and fail == False:
-            return guess_list
-        else:
-            print("Guess 4 colors (listed above) seperated by spaces: ")
-
-
-def check_ans(guess_list, ans_list):
-    guess = []
-    ans = []
-    flags = []
-    bl = 0
-    w = 0
-
-    for i in range(4):
-        guess.append(guess_list[i])
-        ans.append(ans_list[i])
-
-    i = 3
-    while i >= 0:
-        if guess[i] == ans_list[i]:
-            guess.pop(i)
-            ans.pop(i)
-            bl += 1
-        i -= 1
-
-    max = len(guess)
-
-    for i in range(max):
-        for j in range(max):
-            if guess[i] == ans[j]:
-                w += 1
-                ans.pop(j)
-                ans.insert(j, "")
-
-    return [bl, w]
+    for i in guess_copy:
+        if i != "" and i in ans_copy:
+            game.white_peg += 1
 
 
 def main():
     while True:
-        seed()
-        ans_list = gen_ans()
-        game_board, wObl_board = init_board()
-        wObl_list = [" ", " "]
-        counter = 9
+        game = Game()
 
-        while True:
+        while game.round <= 10:
             clear_screen()
-            draw_screen(game_board, wObl_board)
+            draw_screen(game)
 
-            if wObl_list[0] == 4:
+            #TODO check for win/loss condition
+            if game.black_peg == 4:
                 print("Winner!")
-                input()
                 break
-            elif counter < 0:
-                print("end of game")
-                input()
+
+            if game.round == 10:
+                print("Loser!")
                 break
             
-            guess_list = input_par()
-            wObl_list = check_ans(guess_list, ans_list)
-            game_board, wObl_board = update_board(game_board, guess_list, wObl_board, wObl_list, counter)
-            counter -= 1
+            # get input
+            get_input(game)
+            
+            # check ans
+            check_ans(game)
+
+            #TODO update board
+            update_board(game)
+            
+            game.round += 1
+
+        input()
 
 
 main()
+
+# game = Game()
+# game.answer = ['w', 'g', 'b', 'p']
+# game.guess = ['w', 'w', 'w', 'w']
+# check_ans(game)
+# print("Black:", game.black_peg, "White", game.white_peg)
+
+# game.answer = ['r', 'r', 'r', 'p']
+# game.guess = ['p', 'w', 'r', 'r']
+# check_ans(game)
+# print("Black:", game.black_peg, "White", game.white_peg)
