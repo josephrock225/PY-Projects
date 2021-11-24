@@ -1,7 +1,6 @@
 
 from os import system, name
-from random import seed
-from random import randint
+from random import *
 
 
 class Game:
@@ -9,15 +8,11 @@ class Game:
         self.colors = ["r", "g", "b", "p", "y", "w"]
         self.round = 9
         self.guess = []
-        self.answer = self.gen_ans()
+        self.answer = []
         self.decoding_board = self.init_decoding_board()
         self.key_board = self.init_key_board()
         self.black_peg = 0
         self.white_peg = 0
-
-    def gen_ans(self) -> list:
-        seed()
-        return [self.colors[randint(0,5)] for i in range(0, 4)]
 
     def init_decoding_board(self) -> list[list]:
         return [["x" for row in range(0, 4)] for col in range(0, 10)]
@@ -31,6 +26,23 @@ def clear_screen():
         _ = system('cls')
     else:
         _ = system('clear')
+
+
+def select_gamemode(game) -> list:
+    seed()
+    while True:
+        print("Select your gamemode.")
+        print("Press 1 for no repeating colors.")
+        print("Press 2 for repeating colors.")
+        choice = input()
+
+        if choice == "1":
+            game.answer = sample(game.colors, 4)
+            break
+            
+        elif choice == "2":
+            game.answer = choices(game.colors, k=4)           
+            break
 
 
 def get_input(game) -> list:
@@ -67,12 +79,10 @@ def draw_screen(game):
 
     print("Guess 4 colors: ")
     print("Colors:", *game.colors)
+    print(game.answer)
 
 
 def update_board(game):
-    #row = abs(game.round - 9)
-
-
     for i in range(0,4):
         game.decoding_board[game.round].pop(i)
         game.decoding_board[game.round].insert(i, game.guess[i])
@@ -105,7 +115,9 @@ def check_ans(game):
 
 def main():
     while True:
+        clear_screen()
         game = Game()
+        select_gamemode(game)
 
         while game.round >= -1:
             clear_screen()
@@ -147,3 +159,8 @@ main()
 # game.guess = ['p', 'w', 'r', 'r']
 # check_ans(game)
 # print("Black:", game.black_peg, "White", game.white_peg)
+
+# seed()
+# colors = ["r", "g", "b", "p", "y", "w"]
+
+# print(choices(colors, k=4))
