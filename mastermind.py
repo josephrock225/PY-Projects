@@ -31,6 +31,12 @@ class Game:
     def set_decoding_board(self, guess):
         self.decoding_board[self.round] = [i for i in guess]
 
+    def in_colors(self, guess):
+        for i in guess:
+            if i not in self.colors:
+                return False
+        return True
+
     def won(self) -> bool:
         try:
             return self.key_board[self.round + 1][0] == 4
@@ -65,16 +71,10 @@ def select_gamemode(game):
 
 
 def get_input(game):
-    def in_colors(guess):
-        for i in guess:
-            if i not in game.colors:
-                return False
-        return True
-
     while True:
         guess = input().lower().replace(' ', '')
 
-        if len(guess) == 4 and in_colors(guess):
+        if len(guess) == 4 and game.in_colors(guess):
             game.set_decoding_board(guess)
             break
         else:
@@ -88,8 +88,8 @@ def check_ans(game):
     guess_copy = game.decoding_board[game.round].copy()
 
     # check for correct color correct spot
-    for index, ans_letter in enumerate(ans_copy):
-        if ans_letter == guess_copy[index]:
+    for index, _ in enumerate(ans_copy):
+        if ans_copy[index] == guess_copy[index]:
             ans_copy[index] = ""
             guess_copy[index] = ""
             black_peg += 1
