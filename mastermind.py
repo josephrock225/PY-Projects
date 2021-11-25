@@ -1,6 +1,7 @@
 
 from os import system, name
 from random import *
+from termcolor import colored, cprint
 
 
 class Game:
@@ -15,10 +16,10 @@ class Game:
         self.white_peg = 0
 
     def init_decoding_board(self) -> list[list]:
-        return [["x" for row in range(4)] for col in range(10)]
+        return [["-" for row in range(4)] for col in range(10)]
     
     def init_key_board(self) -> list[list]:
-        return [[" " for i in range(2)] for j in range(10)]
+        return [[" " for row in range(2)] for col in range(10)]
 
 
 def clear_screen():
@@ -93,29 +94,38 @@ def check_ans(game):
 
 
 def draw_screen(game):
+    color_dict = {
+        "-": "white",
+        "r": "red",
+        "g": "green",
+        "b": "blue",
+        "p": "magenta",
+        "y": "yellow",
+        "w": "white"
+    }
+
     print()
     for i in range(10):
         print("|  ", end=" ")
         for j in range(4):
-            print(game.decoding_board[i][j], " ", end=" ")
+            color = color_dict[game.decoding_board[i][j]]
+            print(colored(game.decoding_board[i][j], color), " ", end=" ")
         print("|   Bl:", game.key_board[i][0], " W:", game.key_board[i][1])
         print()
 
     print("Guess 4 colors: ")
-    print("Colors:", *game.colors)
+    print("Colors:", end =" ")
+    for i in range(len(game.colors)):
+        print(colored(game.colors[i], color_dict[game.colors[i]]), end=" ")
+    print()
 
 
 def update_board(game):
     for i in range(4):
-        #game.decoding_board[game.round].pop(i)
         game.decoding_board[game.round][i] = game.guess[i]
 
     game.key_board[game.round][0] = game.black_peg
     game.key_board[game.round][1] = game.white_peg
-    # game.key_board[game.round].pop(0)
-    # game.key_board[game.round].insert(0, game.black_peg)
-    # game.key_board[game.round].pop(1)
-    # game.key_board[game.round].insert(1, game.white_peg)
 
 
 def main():
