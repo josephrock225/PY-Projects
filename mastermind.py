@@ -32,6 +32,7 @@ def clear_screen():
 def select_gamemode(game):
     seed()
     while True:
+        clear_screen()
         print("Select your gamemode.")
         print("Press 1 for no repeating colors.")
         print("Press 2 to allow repeating colors.")
@@ -62,10 +63,12 @@ def get_input(game):
 
         # incorrect # of letters
         if len(guess) != 4:
+            print("Pick 4 colors.")
             continue
 
         # letter not in colors list
         if not in_colors(guess):
+            print("Only pick letters from list.")
             continue
 
         game.guess = [i for i in guess]
@@ -81,10 +84,8 @@ def check_ans(game):
     # check for correct color correct spot
     for index, ans_letter in enumerate(ans_copy):
         if ans_letter == guess_copy[index]:
-            ans_copy.pop(index)
-            ans_copy.insert(index, "")
-            guess_copy.pop(index)
-            guess_copy.insert(index, "")
+            ans_copy[index] = ""
+            guess_copy[index] = ""
             game.black_peg += 1
 
     # check for correct color incorrect spot
@@ -131,7 +132,6 @@ def update_board(game):
 
 def main():
     while True:
-        clear_screen()
         game = Game()
         select_gamemode(game)
 
