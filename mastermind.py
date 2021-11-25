@@ -107,13 +107,15 @@ def draw_screen(game):
 
 def update_board(game):
     for i in range(4):
-        game.decoding_board[game.round].pop(i)
-        game.decoding_board[game.round].insert(i, game.guess[i])
+        #game.decoding_board[game.round].pop(i)
+        game.decoding_board[game.round][i] = game.guess[i]
 
-    game.key_board[game.round].pop(0)
-    game.key_board[game.round].insert(0, game.black_peg)
-    game.key_board[game.round].pop(1)
-    game.key_board[game.round].insert(1, game.white_peg)
+    game.key_board[game.round][0] = game.black_peg
+    game.key_board[game.round][1] = game.white_peg
+    # game.key_board[game.round].pop(0)
+    # game.key_board[game.round].insert(0, game.black_peg)
+    # game.key_board[game.round].pop(1)
+    # game.key_board[game.round].insert(1, game.white_peg)
 
 
 def main():
