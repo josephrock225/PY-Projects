@@ -16,7 +16,6 @@ class Game:
         }
         self.colors = [i for i in self.color_dict.keys()]
         self.round = 9
-        self.guess = []
         self.answer = []
         self.decoding_board = self.init_decoding_board()
         self.key_board = self.init_key_board()
@@ -30,9 +29,10 @@ class Game:
         return [[" " for row in range(2)] for col in range(10)]
 
     def won(self) -> bool:
-        if self.round != 9:
+        try:
             return self.key_board[self.round + 1][0] == 4
-        return False
+        except:
+            return False
 
 
 def clear_screen():
@@ -43,15 +43,14 @@ def clear_screen():
 
 
 def select_gamemode(game):
-    seed()
     while True:
-        clear_screen()
         print("Select your gamemode.")
         print("Press 1 for no repeating colors.")
         print("Press 2 to allow repeating colors.")
         print("Type 'quit' to exit.")
         choice = input()
 
+        seed()
         if choice == "1":
             game.answer = sample(game.colors, 4)
             break  
@@ -125,6 +124,7 @@ def draw_screen(game):
 
 def main():
     while True:
+        clear_screen()
         game = Game()
         select_gamemode(game)
 
@@ -138,7 +138,7 @@ def main():
 
             if game.round == -1:
                 print("Loser!")
-                print("The answer was:", *game.answer)
+                print("The answer was:", *[colored(i, game.color_dict[i]) for i in game.answer])
                 break
             
             get_input(game)
