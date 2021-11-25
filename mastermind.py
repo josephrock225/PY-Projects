@@ -1,7 +1,7 @@
 
 from os import system, name
 from random import *
-from termcolor import colored, cprint
+from termcolor import colored
 
 
 class Game:
@@ -108,8 +108,9 @@ def draw_screen(game):
     for i in range(10):
         print("|  ", end=" ")
         for j in range(4):
-            color = color_dict[game.decoding_board[i][j]]
-            print(colored(game.decoding_board[i][j], color), " ", end=" ")
+            letter = game.decoding_board[i][j]
+            color = color_dict[letter]
+            print(colored(letter, color), " ", end=" ")
         print("|   Bl:", game.key_board[i][0], " W:", game.key_board[i][1])
         print()
 
@@ -152,8 +153,7 @@ def main():
             update_board(game)
             game.round -= 1
 
-        print("Press any key to play again.")
-        input()
+        input("Press any key.")
 
 
 main()
