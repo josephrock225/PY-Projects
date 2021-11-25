@@ -61,18 +61,12 @@ def get_input(game):
     while True:
         guess = input().lower().replace(' ', '')
 
-        # incorrect # of letters
-        if len(guess) != 4:
+        if len(guess) == 4 and in_colors(guess):
+            game.guess = [i for i in guess]
+            break
+
+        else:
             print("Pick 4 colors.")
-            continue
-
-        # letter not in colors list
-        if not in_colors(guess):
-            print("Only pick letters from list.")
-            continue
-
-        game.guess = [i for i in guess]
-        break
 
 
 def check_ans(game):
