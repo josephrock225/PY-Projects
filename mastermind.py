@@ -1,6 +1,6 @@
 
 from os import system, name
-from random import *
+from random import seed, sample, choices
 from termcolor import colored
 
 
@@ -28,6 +28,9 @@ class Game:
     def init_key_board(self) -> list[list]:
         return [[" " for row in range(2)] for col in range(10)]
 
+    def set_decoding_board(self, guess):
+        self.decoding_board[self.round] = [i for i in guess]
+
     def won(self) -> bool:
         try:
             return self.key_board[self.round + 1][0] == 4
@@ -44,7 +47,7 @@ def clear_screen():
 
 def select_gamemode(game):
     while True:
-        print("Select your gamemode.")
+        print("Select a gamemode.")
         print("Press 1 for no repeating colors.")
         print("Press 2 to allow repeating colors.")
         print("Type 'quit' to exit.")
@@ -72,10 +75,10 @@ def get_input(game):
         guess = input().lower().replace(' ', '')
 
         if len(guess) == 4 and in_colors(guess):
-            game.decoding_board[game.round] = [i for i in guess]
+            game.set_decoding_board(guess)
             break
         else:
-            print("Pick 4 colors.")
+            print("Pick 4 colors from list.")
 
 
 def check_ans(game):
