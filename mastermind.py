@@ -106,6 +106,13 @@ def check_ans(game):
     game.set_score(black_peg, white_peg)
 
 
+def add_color(game, text_list) -> list:
+        if text_list[0].isalpha():
+            return [colored(letter, game.color_dict[letter]) for letter in text_list]
+        else:
+            return text_list
+
+
 def draw_screen(game):
     # draw the board
     for i in range(10):
@@ -116,7 +123,7 @@ def draw_screen(game):
                 print(colored(letter, game.color_dict[letter]), " ", end=" ")
             else:
                 print(letter, " ", end=" ")
-        print("|   Bl:", game.key_board[i][0], " W:", game.key_board[i][1])
+        print(f"|   Bl: {game.key_board[i][0]}  W: {game.key_board[i][1]}")
         print()
 
     # draw the text
@@ -152,5 +159,11 @@ def main():
 
         input("Press any key.")
 
+def test():
+    game = Game()
+    something = ["r", "r", "r", "r"]
+    print(*add_color(game, something))
 
-main()
+
+#main()
+test()
