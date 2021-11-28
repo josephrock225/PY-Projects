@@ -149,7 +149,7 @@ def main():
             check_ans(game)
             game.round -= 1
 
-        input("Press any key.")
+        input("Press Enter")
 
 
 main()
