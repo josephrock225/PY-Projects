@@ -118,15 +118,12 @@ def draw_screen(game):
     for i, line in enumerate(game.decoding_board):
         print("|", end="   ")
         print(*add_color(game, line), sep="  ", end="   ")
-        print(f"|   Bl: {game.key_board[i][0]}  W: {game.key_board[i][1]}")
+        print("|   Bl:", game.key_board[i][0], " W:", game.key_board[i][1])
         print()
 
     # draw the text
     print("Guess 4 colors: ")
-    print("Colors:", end =" ")
-    for i in range(len(game.colors)):
-        print(colored(game.colors[i], game.color_dict[game.colors[i]]), end=" ")
-    print()
+    print("Colors:", *add_color(game, game.colors))
 
 
 def main():
@@ -145,7 +142,7 @@ def main():
 
             if game.round == -1:
                 print("Loser!")
-                print("The answer was:", *[colored(i, game.color_dict[i]) for i in game.answer])
+                print("The answer was:", *add_color(game, game.answer))
                 break
             
             get_input(game)
@@ -154,11 +151,5 @@ def main():
 
         input("Press any key.")
 
-def test():
-    game = Game()
-    something = ["r", "r", "r", "r"]
-    print(*add_color(game, something))
-
 
 main()
-test()
