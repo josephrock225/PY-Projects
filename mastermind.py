@@ -115,14 +115,9 @@ def add_color(game, text_list) -> list:
 
 def draw_screen(game):
     # draw the board
-    for i in range(10):
-        print("|  ", end=" ")
-        for j in range(4):
-            letter = game.decoding_board[i][j]
-            if letter.isalpha():
-                print(colored(letter, game.color_dict[letter]), " ", end=" ")
-            else:
-                print(letter, " ", end=" ")
+    for i, line in enumerate(game.decoding_board):
+        print("|", end="   ")
+        print(*add_color(game, line), sep="  ", end="   ")
         print(f"|   Bl: {game.key_board[i][0]}  W: {game.key_board[i][1]}")
         print()
 
@@ -165,5 +160,5 @@ def test():
     print(*add_color(game, something))
 
 
-#main()
+main()
 test()
