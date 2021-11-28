@@ -14,7 +14,7 @@ class Game:
             "y": "yellow",
             "w": "white"
         }
-        self.colors = [i for i in self.color_dict.keys()]
+        self.colors = list(self.color_dict.keys())
         self.round = 9
         self.answer = []
         self.decoding_board = self.init_decoding_board()
@@ -26,10 +26,13 @@ class Game:
     
     # key_board[round #][0==black_peg or 1==white_peg]
     def init_key_board(self) -> list[list]:
-        return [[" " for row in range(2)] for col in range(10)]
+        return [["-" for row in range(2)] for col in range(10)]
 
-    def set_decoding_board(self, guess):
-        self.decoding_board[self.round] = [i for i in guess]
+    def set_guess(self, guess):
+        self.decoding_board[self.round] = list(guess)
+
+    def set_score(self, black, white):
+        self.key_board[self.round] = [black, white]
 
     def in_colors(self, guess):
         for i in guess:
@@ -40,7 +43,7 @@ class Game:
     def won(self) -> bool:
         try:
             return self.key_board[self.round + 1][0] == 4
-        except:
+        except IndexError:
             return False
 
 
@@ -75,7 +78,7 @@ def get_input(game):
         guess = input().lower().replace(' ', '')
 
         if len(guess) == 4 and game.in_colors(guess):
-            game.set_decoding_board(guess)
+            game.set_guess(guess)
             break
         else:
             print("Pick 4 colors from list.")
@@ -100,8 +103,7 @@ def check_ans(game):
             ans_copy.remove(i)
             white_peg += 1
 
-    game.key_board[game.round][0] = black_peg
-    game.key_board[game.round][1] = white_peg
+    game.set_score(black_peg, white_peg)
 
 
 def draw_screen(game):
