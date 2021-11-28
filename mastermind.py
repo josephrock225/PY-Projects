@@ -24,7 +24,7 @@ class Game:
     def init_decoding_board(self) -> list[list]:
         return [["-" for row in range(4)] for col in range(10)]
     
-    # key_board[round #][0==black_peg or 1==white_peg]
+    # key_board[round #][black_peg, white_peg]
     def init_key_board(self) -> list[list]:
         return [["-" for row in range(2)] for col in range(10)]
 
@@ -42,7 +42,7 @@ class Game:
 
     def won(self) -> bool:
         try:
-            return self.key_board[self.round + 1][0] == 4
+            return self.key_board[self.round + 1][0] is 4
         except IndexError:
             return False
 
@@ -63,10 +63,10 @@ def select_gamemode(game):
         choice = input()
 
         seed()
-        if choice == "1":
+        if choice is "1":
             game.answer = sample(game.colors, 4)
             break  
-        elif choice == "2":
+        elif choice is "2":
             game.answer = choices(game.colors, k=4)           
             break
         elif choice == "quit":
@@ -77,7 +77,7 @@ def get_input(game):
     while True:
         guess = input().lower().replace(' ', '')
 
-        if len(guess) == 4 and game.in_colors(guess):
+        if len(guess) is 4 and game.in_colors(guess):
             game.set_guess(guess)
             break
         else:
@@ -87,20 +87,20 @@ def get_input(game):
 def check_ans(game):
     black_peg = 0
     white_peg = 0
-    ans_copy = game.answer.copy()
-    guess_copy = game.decoding_board[game.round].copy()
+    ans = game.answer.copy()
+    guess = game.decoding_board[game.round].copy()
 
     # check for correct color correct spot
-    for index, _ in enumerate(ans_copy):
-        if ans_copy[index] == guess_copy[index]:
-            ans_copy[index] = ""
-            guess_copy[index] = ""
+    for index, _ in enumerate(ans):
+        if ans[index] is guess[index]:
+            ans[index] = ""
+            guess[index] = ""
             black_peg += 1
 
     # check for correct color incorrect spot
-    for i in guess_copy:
-        if i != "" and i in ans_copy:
-            ans_copy.remove(i)
+    for i in guess:
+        if i != "" and i in ans:
+            ans.remove(i)
             white_peg += 1
 
     game.set_score(black_peg, white_peg)
@@ -140,7 +140,7 @@ def main():
                 print("Winner!")
                 break
 
-            if game.round == -1:
+            if game.round is -1:
                 print("Loser!")
                 print("The answer was:", *add_color(game, game.answer))
                 break
