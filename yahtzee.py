@@ -1,104 +1,79 @@
 import random
 
-def rollDice():
+def roll_dice():
     random.seed()
     return [random.randint(1, 6) for i in range(5)]
 
 
-def isYahtzee(diceList):
-    return len(set(diceList)) == 1
+def yahtzee(dice_list):
+    return len(set(dice_list)) == 1
 
 
-def isFourOAK(diceList):
-    lenCheck = len(set(diceList)) == 2
-    edgeCheck = diceList[0] == diceList[3] or diceList[1] == diceList[4]
-    return lenCheck and edgeCheck
+def four_oak(dice_list):
+    len_check = len(set(dice_list)) == 2
+    edge_check = dice_list[0] == dice_list[3] or dice_list[1] == dice_list[4]
+    return len_check and edge_check
 
 
-def isFullHouse(diceList):
-    lenCheck = len(set(diceList)) == 2
-    edgeCheck = (diceList[0] == diceList[1] and diceList[2] == diceList[4]) or \
-        (diceList[0] == diceList[2] and diceList[3] == diceList[4])
-    return lenCheck and edgeCheck
+def full_house(dice_list):
+    len_check = len(set(dice_list)) == 2
+    edge_check = (dice_list[0] == dice_list[1] and dice_list[2] == dice_list[4]) or \
+        (dice_list[0] == dice_list[2] and dice_list[3] == dice_list[4])
+    return len_check and edge_check
 
 
-def isThreeOAK(diceList):
-    lenCheck = len(set(diceList)) == 3
+def three_oak(dice_list):
+    len_check = len(set(dice_list)) == 3
 
     for i in range(1, 4):
-        if diceList[i] == diceList[i - 1] and diceList[i] == diceList[i + 1]:
-            return lenCheck
+        if dice_list[i] == dice_list[i - 1] and dice_list[i] == dice_list[i + 1]:
+            return len_check
 
     return False
 
 
-def isSmallRun(diceList):
-    pairCheck = len(set(diceList)) == 4 and diceList[4] - diceList[0] == 3
-    gapCheck = len(set(diceList)) == 5 and diceList[3] - diceList[1] == 2
+def small_run(dice_list):
+    pairCheck = len(set(dice_list)) == 4 and dice_list[4] - dice_list[0] == 3
+    gapCheck = len(set(dice_list)) == 5 and dice_list[3] - dice_list[1] == 2
     return pairCheck or gapCheck
 
 
-def isBigRun(diceList):
-    lenCheck = len(set(diceList)) == 5
-    diffCheck = diceList[4] - diceList[0] == 4
-    return lenCheck and diffCheck
+def big_run(dice_list):
+    len_check = len(set(dice_list)) == 5
+    diff_check = dice_list[4] - dice_list[0] == 4
+    return len_check and diff_check
 
 
-def handCheck(dList):
-    diceList = dList.copy()
-    diceList.sort()
+def handCheck(dice_list):
+    dice_list.sort()
 
-    if isYahtzee(diceList):
+    if yahtzee(dice_list):
         print("Yahtzee")
 
-    elif isFourOAK(diceList):
+    elif four_oak(dice_list):
         print("4 of a kind")
    
-    elif isFullHouse(diceList):
-        print("full house")
+    elif full_house(dice_list):
+        print("Full House")
 
-    elif isThreeOAK(diceList):
-        print("3 of a kind!")
+    elif three_oak(dice_list):
+        print("3 of a kind")
 
-    elif isBigRun(diceList):
-        print("Big Run!!!")
+    elif big_run(dice_list):
+        print("Big Run")
 
-    elif isSmallRun(diceList):
+    elif small_run(dice_list):
         print("Small Run")
+
+    else:
+        print("Nothing Special")
 
 
 def main():
-    dList = rollDice()
-    print(dList)
+    dice_list = roll_dice()
+    print(dice_list)
     print()
-    handCheck(dList)
+    handCheck(dice_list)
 
 
-def test():
-    # Yahtzee
-    d = [1,1,1,1,1]
-    handCheck(d)
-
-    # 4oak
-    d = [1,1,1,1,2]
-    handCheck(d)
-
-    # Full house
-    d = [1,1,1,2,2]
-    handCheck(d)
-
-    # 3oak
-    d = [1,1,1,2,3]
-    handCheck(d)
-
-    # big run
-    d = [1,2,3,4,5]
-    handCheck(d)
-
-    # small run
-    d = [1,2,3,4,6]
-    handCheck(d)
-
-
-#main()
-test()
+main()
