@@ -22,11 +22,11 @@ class Game:
 
     # decoding_board[round #][col #]
     def init_guess_board(self) -> list[list]:
-        return [["-" for row in range(4)] for col in range(10)]
+        return [["-" for col in range(4)] for row in range(10)]
     
     # key_board[round #][black_peg, white_peg]
     def init_score_board(self) -> list[list]:
-        return [["-" for row in range(2)] for col in range(10)]
+        return [["-" for col in range(2)] for row in range(10)]
 
     def set_guess(self, guess):
         self.guess_board[self.round] = list(guess)
